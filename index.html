@@ -1228,16 +1228,23 @@
                                 backdropFilter: 'blur(20px)',
                                 borderRadius: '50%',
                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                boxShadow: '0 20px 60px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1)',
+                                boxShadow: '0 20px 60px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1), 0 0 40px rgba(239, 68, 68, 0.4)',
                                 transform: 'translateY(-20px)',
-                                transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)'
+                                transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
+                                overflow: 'hidden'
                             }}>
-                                <div style={{
-                                    filter: 'drop-shadow(0 0 20px rgba(99, 102, 241, 0.6))',
-                                    animation: 'float 3s ease-in-out infinite'
-                                }}>
-                                    <Icon name={data.icon} size={60} color="white" />
-                                </div>
+                                <img
+                                    src="logo_yk.jpg"
+                                    alt="Logo"
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover',
+                                        borderRadius: '50%',
+                                        filter: 'drop-shadow(0 0 15px rgba(239, 68, 68, 0.6))',
+                                        animation: 'float 3s ease-in-out infinite'
+                                    }}
+                                />
                             </div>
                         </div>
 
