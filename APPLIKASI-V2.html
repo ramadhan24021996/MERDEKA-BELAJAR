@@ -260,6 +260,10 @@
             .mobile-header {
                 display: none;
             }
+
+            .mobile-only {
+                display: none !important;
+            }
         }
 
         /* --- Components --- */
@@ -313,7 +317,8 @@
             overflow-x: hidden;
             background: #0a0c10;
             scroll-behavior: smooth;
-            padding-bottom: calc(120px + env(safe-area-inset-bottom));
+            padding-bottom: 120px;
+            /* Extra space for mobile nav bar */
         }
 
         .bg-blob {
@@ -469,6 +474,7 @@
             padding-bottom: calc(140px + env(safe-area-inset-bottom));
             width: 100%;
             transition: padding 0.3s ease;
+            min-height: 100vh;
         }
 
         .nav-item {
@@ -1220,6 +1226,25 @@
                     <div className="onboarding-layout">
                         {/* Left/Top Visual Panel */}
                         <div className="onboarding-visual">
+                            {/* Floating 3D Icon */}
+                            <div className="visual-icon-wrapper animate" style={{
+                                width: '120px',
+                                height: '120px',
+                                background: 'rgba(255,255,255,0.05)',
+                                backdropFilter: 'blur(20px)',
+                                borderRadius: '50%',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                boxShadow: '0 20px 60px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1)',
+                                transform: 'translateY(-20px)',
+                                transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)'
+                            }}>
+                                <div style={{
+                                    filter: 'drop-shadow(0 0 20px rgba(99, 102, 241, 0.6))',
+                                    animation: 'float 3s ease-in-out infinite'
+                                }}>
+                                    <Icon name={data.icon} size={60} color="white" />
+                                </div>
+                            </div>
                         </div>
 
                         {/* Right/Bottom Content Panel */}
@@ -1663,31 +1688,96 @@
         };
 
         // --- Bidang (Categories) Screen ---
-        const Bidang = ({ onBidangClick, getCategoryCount }) => {
+        const Bidang = ({ onBidangClick, getCategoryCount, onNavigate }) => {
+            const [activeFilter, setActiveFilter] = useState('all');
             const categories = [
-                { name: 'Hardware', icon: '🖥️', color: '#3B82F6' },
-                { name: 'Software', icon: '💿', color: '#8B5CF6' },
-                { name: 'Network', icon: '🌐', color: '#10B981' },
-                { name: 'Security', icon: '🛡️', color: '#EF4444' },
-                { name: 'Database', icon: '🗄️', color: '#F59E0B' },
-                { name: 'Development', icon: '⚡', color: '#EC4899' },
-                { name: 'Runtimes', icon: '🚀', color: '#F59E0B' },
-                { name: 'Cloud', icon: '☁️', color: '#0EA5E9' }
+                { name: 'Hardware', icon: '🖥️', color: '#3B82F6', group: 'infra' },
+                { name: 'Software', icon: '💿', color: '#8B5CF6', group: 'app' },
+                { name: 'Network', icon: '🌐', color: '#10B981', group: 'infra' },
+                { name: 'Security', icon: '🛡️', color: '#EF4444', group: 'infra' },
+                { name: 'Database', icon: '🗄️', color: '#F59E0B', group: 'data' },
+                { name: 'Development', icon: '⚡', color: '#EC4899', group: 'app' },
+                { name: 'Runtimes', icon: '🚀', color: '#F59E0B', group: 'app' },
+                { name: 'Cloud', icon: '☁️', color: '#0EA5E9', group: 'infra' }
             ];
+
+            const filteredCategories = activeFilter === 'all'
+                ? categories
+                : categories.filter(c => c.group === activeFilter);
 
             return (
                 <Background3D color1="var(--primary)" color2="var(--secondary)">
-                    <div className="animate">
-                        <header className="page-header" style={{ background: 'linear-gradient(135deg, var(--primary), var(--secondary))' }}>
-                            <h1 style={{ fontSize: '24px', fontWeight: '800', color: 'white' }}>Bidang IT</h1>
-                            <div className="search-bar" style={{ background: 'rgba(255,255,255,0.2)', border: 'none', marginTop: 16 }}>
-                                <Icon name="search" color="white" />
+                    <div className="animate sidebar-page-container">
+                        {/* Sidebar Menu */}
+                        <div className="app-sidebar">
+                            <div className="sidebar-header">
+                                <h2>Bidang IT</h2>
+                                <p>Kategori Keahlian</p>
+                            </div>
+                            <div className="sidebar-menu">
+                                <button className={activeFilter === 'all' ? 'active' : ''} onClick={() => setActiveFilter('all')}>
+                                    <Icon name="grid" size={18} /> Semua Bidang
+                                </button>
+                                <button className={activeFilter === 'infra' ? 'active' : ''} onClick={() => setActiveFilter('infra')}>
+                                    <Icon name="server" size={18} /> Infrastruktur
+                                </button>
+                                <button className={activeFilter === 'app' ? 'active' : ''} onClick={() => setActiveFilter('app')}>
+                                    <Icon name="code" size={18} /> Aplikasi
+                                </button>
+                                <button className={activeFilter === 'data' ? 'active' : ''} onClick={() => setActiveFilter('data')}>
+                                    <Icon name="database" size={18} /> Data
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Main Content */}
+                        <div className="app-content">
+                            <header className="mobile-header" style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                                <div onClick={() => onNavigate && onNavigate('home')} style={{ cursor: 'pointer', padding: 8, background: 'rgba(99, 102, 241, 0.15)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <Icon name="chevron-left" size={20} color="var(--primary)" />
+                                </div>
+                                <h1 style={{ fontSize: '20px', fontWeight: '800' }}>Bidang IT</h1>
+                            </header>
+
+                            {/* Mobile Filter Pills */}
+                            <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 16, marginBottom: 8 }} className="mobile-only">
+                                {[
+                                    { id: 'all', label: 'Semua', icon: 'grid' },
+                                    { id: 'infra', label: 'Infrastruktur', icon: 'server' },
+                                    { id: 'app', label: 'Aplikasi', icon: 'code' },
+                                    { id: 'data', label: 'Data', icon: 'database' }
+                                ].map(f => (
+                                    <div
+                                        key={f.id}
+                                        onClick={() => setActiveFilter(f.id)}
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: 6,
+                                            padding: '8px 14px',
+                                            background: activeFilter === f.id ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
+                                            borderRadius: 20,
+                                            fontSize: 12,
+                                            fontWeight: 600,
+                                            color: activeFilter === f.id ? 'white' : 'var(--text-gray)',
+                                            whiteSpace: 'nowrap',
+                                            cursor: 'pointer',
+                                            border: activeFilter === f.id ? 'none' : '1px solid var(--border)',
+                                            transition: 'all 0.2s'
+                                        }}
+                                    >
+                                        <Icon name={f.icon} size={14} /> {f.label}
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="search-bar" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)', marginBottom: 24 }}>
+                                <Icon name="search" color="var(--text-gray)" />
                                 <input type="text" placeholder="Cari bidang keahlianmu..." style={{ color: 'white' }} />
                             </div>
-                        </header>
-                        <div className="container" style={{ padding: '24px 0', paddingBottom: 60 }}>
-                            <div className="grid-responsive">
-                                {categories.map(cat => (
+
+                            <div className="grid-responsive" style={{ paddingBottom: 40 }}>
+                                {filteredCategories.map(cat => (
                                     <div key={cat.name} className="card bidang-card" onClick={() => onBidangClick && onBidangClick(cat)} style={{
                                         '--glow-color': cat.color,
                                         position: 'relative'
@@ -3128,8 +3218,9 @@
         };
 
         // --- Anggota (Membership & Friends) Screen ---
-        const Anggota = ({ isPrivateMode }) => {
+        const Anggota = ({ isPrivateMode, onNavigate }) => {
             const [searchTerm, setSearchTerm] = useState('');
+            const [filter, setFilter] = useState('all');
             const members = [
                 { id: 1, name: 'Budi Santoso', role: 'IT Support Senior', status: 'Online', isFriend: true, image: 'https://i.pravatar.cc/150?u=1', isPrivate: false },
                 { id: 2, name: 'Siti Aminah', role: 'Database Admin', status: 'Baru Bergabung', isFriend: false, image: 'https://i.pravatar.cc/150?u=2', isPrivate: true },
@@ -3139,19 +3230,81 @@
                 { id: 6, name: 'Agus Setiawan', role: 'Cloud Architect', status: 'Online', isFriend: false, image: 'https://i.pravatar.cc/150?u=6', isPrivate: false }
             ];
 
-            const filteredMembers = members.filter(m =>
-                m.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                m.role.toLowerCase().includes(searchTerm.toLowerCase())
-            );
+            const filteredMembers = members.filter(m => {
+                const matchesSearch = m.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    m.role.toLowerCase().includes(searchTerm.toLowerCase());
+                const matchesFilter = filter === 'all' ||
+                    (filter === 'online' && m.status === 'Online') ||
+                    (filter === 'friends' && m.isFriend) ||
+                    (filter === 'new' && m.status === 'Baru Bergabung');
+                return matchesSearch && matchesFilter;
+            });
 
             return (
                 <Background3D color1="var(--primary)" color2="var(--secondary)">
-                    <div className="animate">
-                        <header className="page-header" style={{ background: 'linear-gradient(135deg, var(--primary), var(--secondary))' }}>
-                            <h1 style={{ fontSize: '24px', fontWeight: '800', color: 'white' }}>Anggota</h1>
-                            <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '13px', marginTop: 4 }}>Privasi Anda prioritas kami. Nama anggota yang mengaktifkan mode privat akan disamarkan.</p>
-                            <div className="search-bar" style={{ background: 'rgba(255,255,255,0.2)', border: 'none', marginTop: 16 }}>
-                                <Icon name="search" color="white" />
+                    <div className="animate sidebar-page-container">
+                        <div className="app-sidebar">
+                            <div className="sidebar-header">
+                                <h2>Anggota</h2>
+                                <p>Komunitas & Teman</p>
+                            </div>
+                            <div className="sidebar-menu">
+                                <button className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}>
+                                    <Icon name="users" size={18} /> Semua Anggota
+                                </button>
+                                <button className={filter === 'online' ? 'active' : ''} onClick={() => setFilter('online')}>
+                                    <Icon name="circle" size={18} /> Sedang Online
+                                </button>
+                                <button className={filter === 'friends' ? 'active' : ''} onClick={() => setFilter('friends')}>
+                                    <Icon name="heart" size={18} /> Teman Saya
+                                </button>
+                                <button className={filter === 'new' ? 'active' : ''} onClick={() => setFilter('new')}>
+                                    <Icon name="user-plus" size={18} /> Baru Bergabung
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="app-content">
+                            <header className="mobile-header" style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                                <div onClick={() => onNavigate && onNavigate('home')} style={{ cursor: 'pointer', padding: 8, background: 'rgba(99, 102, 241, 0.15)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <Icon name="chevron-left" size={20} color="var(--primary)" />
+                                </div>
+                                <h1 style={{ fontSize: '20px', fontWeight: '800' }}>Anggota</h1>
+                            </header>
+
+                            <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 16, marginBottom: 8 }} className="mobile-only">
+                                {[
+                                    { id: 'all', label: 'Semua', icon: 'users' },
+                                    { id: 'online', label: 'Online', icon: 'circle' },
+                                    { id: 'friends', label: 'Teman', icon: 'heart' },
+                                    { id: 'new', label: 'Baru', icon: 'user-plus' }
+                                ].map(f => (
+                                    <div
+                                        key={f.id}
+                                        onClick={() => setFilter(f.id)}
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: 6,
+                                            padding: '8px 14px',
+                                            background: filter === f.id ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
+                                            borderRadius: 20,
+                                            fontSize: 12,
+                                            fontWeight: 600,
+                                            color: filter === f.id ? 'white' : 'var(--text-gray)',
+                                            whiteSpace: 'nowrap',
+                                            cursor: 'pointer',
+                                            border: filter === f.id ? 'none' : '1px solid var(--border)',
+                                            transition: 'all 0.2s'
+                                        }}
+                                    >
+                                        <Icon name={f.icon} size={14} /> {f.label}
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="search-bar" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)', marginBottom: 16 }}>
+                                <Icon name="search" color="var(--text-gray)" />
                                 <input
                                     type="text"
                                     placeholder="Cari nama atau divisi..."
@@ -3160,9 +3313,11 @@
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </div>
-                        </header>
 
-                        <div style={{ padding: '24px' }}>
+                            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, marginBottom: 16 }}>
+                                Privasi Anda prioritas kami. Nama anggota yang mengaktifkan mode privat akan disamarkan.
+                            </p>
+
                             <h3 style={{ fontSize: 16, marginBottom: 16 }}>Saran Koneksi Baru</h3>
                             <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 16, marginBottom: 8 }}>
                                 {members.filter(m => m.status === 'Baru Bergabung').map(m => (
@@ -3180,7 +3335,7 @@
                             </div>
 
                             <h3 style={{ fontSize: 16, marginBottom: 16, marginTop: 16 }}>Daftar Anggota</h3>
-                            <div className="grid-responsive">
+                            <div className="grid-responsive" style={{ paddingBottom: 40 }}>
                                 {filteredMembers.map(m => (
                                     <div key={m.id} className="card" style={{ display: 'flex', alignItems: 'center', gap: 16, padding: 16 }}>
                                         <div style={{ position: 'relative' }}>
@@ -3707,13 +3862,14 @@
                                 <Bidang
                                     onBidangClick={(bidang) => setSelectedBidang(bidang)}
                                     getCategoryCount={getCategoryCount}
+                                    onNavigate={(target) => setTab(target)}
                                 />
                             )}
                         </div>
 
                         {/* Persistent Tabs (Instant Access) */}
                         <div style={{ display: tab === 'pesan' ? 'block' : 'none' }}><Pesan userName={userName} onNavigate={(target) => setTab(target)} /></div>
-                        <div style={{ display: tab === 'anggota' ? 'block' : 'none' }}><Anggota isPrivateMode={isPrivate} /></div>
+                        <div style={{ display: tab === 'anggota' ? 'block' : 'none' }}><Anggota isPrivateMode={isPrivate} onNavigate={(target) => setTab(target)} /></div>
                         <div style={{ display: tab === 'notif' ? 'block' : 'none' }}><Notifikasi onNavigate={(target) => setTab(target)} /></div>
                         <div style={{ display: tab === 'profil' ? 'block' : 'none' }}>
                             <Profil
