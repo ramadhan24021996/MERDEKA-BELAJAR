@@ -2893,6 +2893,9 @@
                             position: 'sticky',
                             top: 0,
                             zIndex: 100,
+                            padding: '16px 20px 20px', // Reduced padding
+                            borderBottomLeftRadius: 24, // Compact radius
+                            borderBottomRightRadius: 24,
                             background: `linear-gradient(135deg, ${searchSource === 'internal' ? 'var(--primary)' : activeSource.color + 'aa'}, var(--secondary))`,
                             transition: 'background 0.5s ease',
                             boxShadow: `0 15px 30px ${searchSource === 'internal' ? 'rgba(0,0,0,0.2)' : activeSource.color + '22'}`,
@@ -2900,7 +2903,7 @@
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                 <div>
                                     <h1 style={{ fontSize: 'clamp(20px, 5vw, 24px)', fontWeight: '800', color: 'white' }}>Beranda</h1>
-                                    <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '13px', marginTop: 4 }}>
+                                    <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '12px', marginTop: 2 }}>
                                         Selamat datang, {userName || 'Karyawan'}!
                                         <span style={{
                                             display: 'inline-block',
@@ -3034,7 +3037,7 @@
                                 <div className="search-bar" style={{
                                     background: 'rgba(255,255,255,0.15)',
                                     border: `1.5px solid ${searchSource === 'internal' ? 'rgba(255,255,255,0.2)' : activeSource.color}`,
-                                    marginTop: 16,
+                                    marginTop: 12, // Reduced margin
                                     transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                                     boxShadow: searchSource === 'internal' ? 'none' : `0 0 20px ${activeSource.color}44`,
                                     backdropFilter: 'blur(10px)'
@@ -3043,7 +3046,7 @@
                                         onClick={(e) => { e.stopPropagation(); setShowSourceSelector(!showSourceSelector); }}
                                         style={{
                                             cursor: 'pointer',
-                                            padding: '6px 10px',
+                                            padding: '4px 8px', // Reduced padding
                                             background: 'rgba(255,255,255,0.1)',
                                             borderRadius: 10,
                                             display: 'flex',
@@ -3149,11 +3152,11 @@
                             </div>
 
                             {/* Quick External Links (Premium Cards) */}
-                            <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
+                            <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
                                 <button
                                     onClick={() => window.open(searchTerm.trim() ? `https://www.google.com/search?q=${encodeURIComponent(searchTerm)}` : 'https://www.google.com', '_blank')}
                                     style={{
-                                        flex: 1, padding: '12px',
+                                        flex: 1, padding: '8px 12px', // Reduced padding
                                         background: 'rgba(255,255,255,0.95)',
                                         color: '#4285F4', borderRadius: 14,
                                         border: 'none', fontSize: 13, fontWeight: 800,
@@ -3170,7 +3173,7 @@
                                 <button
                                     onClick={() => window.open(searchTerm.trim() ? `https://chatgpt.com/?q=${encodeURIComponent(searchTerm)}` : 'https://chatgpt.com', '_blank')}
                                     style={{
-                                        flex: 1, padding: '12px',
+                                        flex: 1, padding: '8px 12px',
                                         background: '#10a37f',
                                         color: 'white', borderRadius: 14,
                                         border: 'none', fontSize: 13, fontWeight: 800,
