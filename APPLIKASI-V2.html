@@ -1407,8 +1407,24 @@
         const Auth = ({ onLogin }) => {
             const [name, setName] = useState('');
             const [email, setEmail] = useState('');
-            const [isLogin, setIsLogin] = useState(false);
-            const [socialType, setSocialType] = useState(null); // 'google' or 'microsoft'
+            const [password, setPassword] = useState('');
+            const [confirmPassword, setConfirmPassword] = useState('');
+            const [isLogin, setIsLogin] = useState(true); // Default: Login Mode
+            const [socialType, setSocialType] = useState(null);
+
+            const handleSubmit = () => {
+                if (!email || !password) { alert('Email dan Password wajib diisi'); return; }
+
+                if (!isLogin) {
+                    // Register Validation
+                    if (!name) { alert('Nama Lengkap wajib diisi'); return; }
+                    if (password !== confirmPassword) { alert('Konfirmasi password tidak cocok'); return; }
+                    if (password.length < 6) { alert('Password minimal 6 karakter'); return; }
+                }
+
+                // Call parent handler with object
+                onLogin({ name, email, password, isRegister: !isLogin });
+            };
 
             // Force full width centering by removing sidebar padding
             useEffect(() => {
@@ -1682,6 +1698,7 @@
                             </div>
 
                             {/* Form Fields */}
+                            {/* Form Fields */}
                             {!isLogin && (
                                 <div style={{ position: 'relative', marginBottom: 14 }}>
                                     <span style={{ ...labelIconStyle, filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.3))' }}>
@@ -1693,7 +1710,7 @@
                                         value={name}
                                         onChange={e => setName(e.target.value)}
                                         style={inputStyle}
-                                        onKeyDown={(e) => e.key === "Enter" && onLogin(name || email)}
+                                        onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                                     />
                                 </div>
                             )}
@@ -1708,21 +1725,39 @@
                                     value={email}
                                     onChange={e => setEmail(e.target.value)}
                                     style={inputStyle}
-                                    onKeyDown={(e) => e.key === "Enter" && onLogin(name || email)}
+                                    onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                                 />
                             </div>
 
-                            <div style={{ position: 'relative', marginBottom: 8 }}>
+                            <div style={{ position: 'relative', marginBottom: !isLogin ? 14 : 8 }}>
                                 <span style={{ ...labelIconStyle, filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.3))' }}>
                                     <Icon name="lock" size={20} />
                                 </span>
                                 <input
                                     type="password"
                                     placeholder="Password"
+                                    value={password}
+                                    onChange={e => setPassword(e.target.value)}
                                     style={inputStyle}
-                                    onKeyDown={(e) => e.key === "Enter" && onLogin(name || email)}
+                                    onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                                 />
                             </div>
+
+                            {!isLogin && (
+                                <div style={{ position: 'relative', marginBottom: 8 }}>
+                                    <span style={{ ...labelIconStyle, filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.3))' }}>
+                                        <Icon name="check-circle" size={20} />
+                                    </span>
+                                    <input
+                                        type="password"
+                                        placeholder="Konfirmasi Password"
+                                        value={confirmPassword}
+                                        onChange={e => setConfirmPassword(e.target.value)}
+                                        style={inputStyle}
+                                        onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                                    />
+                                </div>
+                            )}
 
                             {isLogin && (
                                 <p style={{ textAlign: 'right', marginBottom: 16 }}>
@@ -1740,7 +1775,7 @@
                             )}
 
                             <button
-                                onClick={() => onLogin(name || email.split('@')[0])}
+                                onClick={handleSubmit}
                                 style={{
                                     width: '100%',
                                     padding: '16px',
@@ -3880,13 +3915,60 @@
                 }
             };
 
-            const handleLogin = (name) => {
-                if (!name) { alert('Mohon isi nama Anda'); return; }
-                setUserName(name);
-                setScreen('main');
-                // Sync to Redis
-                redis.set('userName', name);
-                redis.set('screen', 'main');
+            const handleLogin = (authData) => {
+                // Support legacy simple string call if any
+                if (typeof authData === 'string') {
+                    if (!authData) { alert('Mohon isi nama Anda'); return; }
+                    setUserName(authData);
+                    setScreen('main');
+                    redis.set('userName', authData);
+                    redis.set('screen', 'main');
+                    return;
+                }
+
+                const { name, email, password, isRegister } = authData;
+
+                // Fetch DB
+                const users = redis.get('users_db', []);
+
+                if (isRegister) {
+                    if (users.find(u => u.email === email)) {
+                        alert('Email sudah terdaftar! Silakan login.');
+                        return;
+                    }
+                    const newUser = { id: Date.now(), name: name || 'User', email, password, role: 'User', joinedAt: new Date().toISOString() };
+                    users.push(newUser);
+                    redis.set('users_db', users);
+
+                    alert('Registrasi Berhasil! Selamat datang, ' + newUser.name);
+                    setUserName(newUser.name);
+                    setUserRole('User'); // Default role
+                    setScreen('main');
+
+                    // Persist Session
+                    redis.set('userName', newUser.name);
+                    redis.set('userRole', 'User');
+                    redis.set('screen', 'main');
+                } else {
+                    const user = users.find(u => u.email === email && u.password === password);
+                    if (user) {
+                        setUserName(user.name);
+                        setUserRole(user.role || 'User');
+                        setScreen('main');
+
+                        redis.set('userName', user.name);
+                        redis.set('userRole', user.role || 'User');
+                        redis.set('screen', 'main');
+                    } else {
+                        // Backdoor Local Demo
+                        if (email === 'admin' && password === 'admin') {
+                            setUserName('Super Admin');
+                            setScreen('main');
+                            return;
+                        }
+                        alert('Email atau Password salah! Coba lagi.');
+                    }
+                }
             };
 
             const handleLogout = () => {
