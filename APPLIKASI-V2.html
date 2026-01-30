@@ -2893,26 +2893,26 @@
                             position: 'sticky',
                             top: 0,
                             zIndex: 100,
-                            padding: '16px 20px 20px', // Reduced padding
-                            borderBottomLeftRadius: 24, // Compact radius
-                            borderBottomRightRadius: 24,
+                            padding: '12px 16px 16px', // Ultra-compact padding
+                            borderBottomLeftRadius: 20, // Professional sharp radius
+                            borderBottomRightRadius: 20,
                             background: `linear-gradient(135deg, ${searchSource === 'internal' ? 'var(--primary)' : activeSource.color + 'aa'}, var(--secondary))`,
                             transition: 'background 0.5s ease',
                             boxShadow: `0 15px 30px ${searchSource === 'internal' ? 'rgba(0,0,0,0.2)' : activeSource.color + '22'}`,
                         }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                 <div>
-                                    <h1 style={{ fontSize: 'clamp(20px, 5vw, 24px)', fontWeight: '800', color: 'white' }}>Beranda</h1>
-                                    <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '12px', marginTop: 2 }}>
+                                    <h1 style={{ fontSize: '20px', fontWeight: '700', color: 'white' }}>Beranda</h1>
+                                    <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '11px', marginTop: 0 }}>
                                         Selamat datang, {userName || 'Karyawan'}!
                                         <span style={{
                                             display: 'inline-block',
-                                            marginLeft: '8px',
-                                            padding: '2px 8px',
-                                            borderRadius: '6px',
+                                            marginLeft: '6px',
+                                            padding: '1px 6px',
+                                            borderRadius: '4px',
                                             background: 'rgba(99, 102, 241, 0.2)',
                                             color: '#818cf8',
-                                            fontSize: '10px',
+                                            fontSize: '9px',
                                             fontWeight: '700',
                                             border: '1px solid rgba(99, 102, 241, 0.3)',
                                             verticalAlign: 'middle'
@@ -2924,8 +2924,8 @@
                                         onClick={(e) => { e.stopPropagation(); setShowMoreMenu(!showMoreMenu); }}
                                         style={{
                                             cursor: 'pointer',
-                                            width: 40,
-                                            height: 40,
+                                            width: 34, // Compact
+                                            height: 34, // Compact
                                             background: 'rgba(255,255,255,0.15)',
                                             borderRadius: '12px',
                                             color: 'white',
@@ -3037,7 +3037,7 @@
                                 <div className="search-bar" style={{
                                     background: 'rgba(255,255,255,0.15)',
                                     border: `1.5px solid ${searchSource === 'internal' ? 'rgba(255,255,255,0.2)' : activeSource.color}`,
-                                    marginTop: 12, // Reduced margin
+                                    marginTop: 10, // Ultra-compact margin
                                     transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                                     boxShadow: searchSource === 'internal' ? 'none' : `0 0 20px ${activeSource.color}44`,
                                     backdropFilter: 'blur(10px)'
@@ -3152,14 +3152,14 @@
                             </div>
 
                             {/* Quick External Links (Premium Cards) */}
-                            <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
+                            <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
                                 <button
                                     onClick={() => window.open(searchTerm.trim() ? `https://www.google.com/search?q=${encodeURIComponent(searchTerm)}` : 'https://www.google.com', '_blank')}
                                     style={{
-                                        flex: 1, padding: '8px 12px', // Reduced padding
+                                        flex: 1, padding: '6px 10px', // Ultra-compact padding
                                         background: 'rgba(255,255,255,0.95)',
-                                        color: '#4285F4', borderRadius: 14,
-                                        border: 'none', fontSize: 13, fontWeight: 800,
+                                        color: '#4285F4', borderRadius: 12, // Smaller radius
+                                        border: 'none', fontSize: 11, fontWeight: 700, // Smaller font
                                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                                         gap: 10, cursor: 'pointer',
                                         boxShadow: '0 8px 16px rgba(0,0,0,0.15)',
@@ -3168,15 +3168,15 @@
                                     onMouseOver={e => e.currentTarget.style.transform = 'translateY(-2px)'}
                                     onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}
                                 >
-                                    <img src="https://www.google.com/favicon.ico" style={{ width: 18 }} /> Google
+                                    <img src="https://www.google.com/favicon.ico" style={{ width: 14 }} /> Google
                                 </button>
                                 <button
                                     onClick={() => window.open(searchTerm.trim() ? `https://chatgpt.com/?q=${encodeURIComponent(searchTerm)}` : 'https://chatgpt.com', '_blank')}
                                     style={{
-                                        flex: 1, padding: '8px 12px',
+                                        flex: 1, padding: '6px 10px',
                                         background: '#10a37f',
-                                        color: 'white', borderRadius: 14,
-                                        border: 'none', fontSize: 13, fontWeight: 800,
+                                        color: 'white', borderRadius: 12,
+                                        border: 'none', fontSize: 11, fontWeight: 700,
                                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                                         gap: 10, cursor: 'pointer',
                                         boxShadow: '0 8px 20px rgba(16,163,127,0.3)',
@@ -3185,7 +3185,7 @@
                                     onMouseOver={e => e.currentTarget.style.transform = 'translateY(-2px)'}
                                     onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}
                                 >
-                                    <Icon name="zap" size={18} /> ChatGPT
+                                    <Icon name="zap" size={14} /> ChatGPT
                                 </button>
                             </div>
                         </header>
@@ -3260,140 +3260,142 @@
                         </div>
 
                         {/* AI Analysis Modal Overlay */}
-                        {selectedKnowledge && (
-                            <div style={{
-                                position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-                                background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(15px)',
-                                zIndex: 30000, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                padding: 20
-                            }} onClick={() => setSelectedKnowledge(null)}>
-                                <div className="animate" style={{
-                                    maxWidth: 650, width: '100%', background: 'var(--bg-card)',
-                                    borderRadius: 32, border: '1px solid var(--primary)',
-                                    maxHeight: '90vh', overflowY: 'auto', padding: 0,
-                                    position: 'relative', boxShadow: '0 0 80px rgba(99, 102, 241, 0.4)',
-                                    overflow: 'hidden'
-                                }} onClick={e => e.stopPropagation()}>
-                                    {isAnalyzing && (
-                                        <div style={{
-                                            position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-                                            background: 'rgba(15, 23, 42, 0.95)', zIndex: 40000,
-                                            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                                            gap: 20
-                                        }}>
-                                            <div className="animate-pulse" style={{ width: 80, height: 80, borderRadius: '50%', border: '4px solid var(--primary)', borderTopColor: 'transparent', animation: 'spin 1.5s linear infinite' }}></div>
-                                            <div style={{ color: 'white', fontWeight: 800, fontSize: 18 }}>AI Sedang Mendalami Kasus...</div>
-                                            <div style={{ color: 'var(--text-gray)', fontSize: 12 }}>Mengsinkronisasi Data Terbaru dari Google & Knowledge Base</div>
-                                        </div>
-                                    )}
-                                    {/* Header Modal */}
-                                    <div style={{ background: 'linear-gradient(135deg, var(--primary), var(--secondary))', padding: '24px 30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: 15 }}>
-                                            <div style={{ width: 44, height: 44, background: 'rgba(255,255,255,0.2)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                <Icon name="brain-circuit" size={24} color="white" />
+                        {
+                            selectedKnowledge && (
+                                <div style={{
+                                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                                    background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(15px)',
+                                    zIndex: 30000, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    padding: 20
+                                }} onClick={() => setSelectedKnowledge(null)}>
+                                    <div className="animate" style={{
+                                        maxWidth: 650, width: '100%', background: 'var(--bg-card)',
+                                        borderRadius: 32, border: '1px solid var(--primary)',
+                                        maxHeight: '90vh', overflowY: 'auto', padding: 0,
+                                        position: 'relative', boxShadow: '0 0 80px rgba(99, 102, 241, 0.4)',
+                                        overflow: 'hidden'
+                                    }} onClick={e => e.stopPropagation()}>
+                                        {isAnalyzing && (
+                                            <div style={{
+                                                position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                                                background: 'rgba(15, 23, 42, 0.95)', zIndex: 40000,
+                                                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                                                gap: 20
+                                            }}>
+                                                <div className="animate-pulse" style={{ width: 80, height: 80, borderRadius: '50%', border: '4px solid var(--primary)', borderTopColor: 'transparent', animation: 'spin 1.5s linear infinite' }}></div>
+                                                <div style={{ color: 'white', fontWeight: 800, fontSize: 18 }}>AI Sedang Mendalami Kasus...</div>
+                                                <div style={{ color: 'var(--text-gray)', fontSize: 12 }}>Mengsinkronisasi Data Terbaru dari Google & Knowledge Base</div>
                                             </div>
-                                            <div>
-                                                <div style={{ fontSize: 18, fontWeight: 900, color: 'white' }}>Laporan Analisa Deep-AI</div>
-                                                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', fontWeight: 600 }}>Sinkronisasi Google Data + AI Real-time</div>
-                                            </div>
-                                        </div>
-                                        <div onClick={() => setSelectedKnowledge(null)} style={{ cursor: 'pointer', background: 'rgba(0,0,0,0.2)', padding: 10, borderRadius: '50%', color: 'white' }}><Icon name="x" size={20} /></div>
-                                    </div>
-
-                                    <div style={{ padding: 30 }}>
-                                        {/* Question Section */}
-                                        <div style={{ marginBottom: 24 }}>
-                                            <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--primary)', marginBottom: 10, textTransform: 'uppercase', letterSpacing: 1.5, display: 'flex', justifyContent: 'space-between' }}>
-                                                <span>Ringkasan Masalah</span>
-                                                <span style={{ color: '#10B981' }}>Live Analysis: {new Date().toLocaleTimeString()}</span>
-                                            </div>
-                                            <div style={{ fontSize: 16, fontWeight: 700, color: 'white', lineHeight: 1.5, background: 'rgba(99, 102, 241, 0.05)', padding: 16, borderRadius: 16, borderLeft: '4px solid var(--primary)' }}>
-                                                "{selectedKnowledge.question}"
-                                            </div>
-                                        </div>
-
-                                        {/* AI Crawling Section */}
-                                        <div style={{ marginBottom: 24, display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: 16 }}>
-                                            <div className="card" style={{ background: 'rgba(16, 185, 129, 0.05)', padding: 16, borderRadius: 20, border: '1px solid rgba(16, 185, 129, 0.1)', margin: 0 }}>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#10B981', marginBottom: 10 }}>
-                                                    <Icon name="activity" size={16} />
-                                                    <div style={{ fontSize: 11, fontWeight: 800 }}>AI CRAWLING ENGINE</div>
+                                        )}
+                                        {/* Header Modal */}
+                                        <div style={{ background: 'linear-gradient(135deg, var(--primary), var(--secondary))', padding: '24px 30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: 15 }}>
+                                                <div style={{ width: 44, height: 44, background: 'rgba(255,255,255,0.2)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                    <Icon name="brain-circuit" size={24} color="white" />
                                                 </div>
-                                                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, marginBottom: 12 }}>{selectedKnowledge.aiCrawling}</div>
+                                                <div>
+                                                    <div style={{ fontSize: 18, fontWeight: 900, color: 'white' }}>Laporan Analisa Deep-AI</div>
+                                                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', fontWeight: 600 }}>Sinkronisasi Google Data + AI Real-time</div>
+                                                </div>
+                                            </div>
+                                            <div onClick={() => setSelectedKnowledge(null)} style={{ cursor: 'pointer', background: 'rgba(0,0,0,0.2)', padding: 10, borderRadius: '50%', color: 'white' }}><Icon name="x" size={20} /></div>
+                                        </div>
+
+                                        <div style={{ padding: 30 }}>
+                                            {/* Question Section */}
+                                            <div style={{ marginBottom: 24 }}>
+                                                <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--primary)', marginBottom: 10, textTransform: 'uppercase', letterSpacing: 1.5, display: 'flex', justifyContent: 'space-between' }}>
+                                                    <span>Ringkasan Masalah</span>
+                                                    <span style={{ color: '#10B981' }}>Live Analysis: {new Date().toLocaleTimeString()}</span>
+                                                </div>
+                                                <div style={{ fontSize: 16, fontWeight: 700, color: 'white', lineHeight: 1.5, background: 'rgba(99, 102, 241, 0.05)', padding: 16, borderRadius: 16, borderLeft: '4px solid var(--primary)' }}>
+                                                    "{selectedKnowledge.question}"
+                                                </div>
+                                            </div>
+
+                                            {/* AI Crawling Section */}
+                                            <div style={{ marginBottom: 24, display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: 16 }}>
+                                                <div className="card" style={{ background: 'rgba(16, 185, 129, 0.05)', padding: 16, borderRadius: 20, border: '1px solid rgba(16, 185, 129, 0.1)', margin: 0 }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#10B981', marginBottom: 10 }}>
+                                                        <Icon name="activity" size={16} />
+                                                        <div style={{ fontSize: 11, fontWeight: 800 }}>AI CRAWLING ENGINE</div>
+                                                    </div>
+                                                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, marginBottom: 12 }}>{selectedKnowledge.aiCrawling}</div>
+                                                    <button
+                                                        onClick={() => alert('Membuka detail resource AI...')}
+                                                        style={{ background: 'rgba(16, 185, 129, 0.1)', border: 'none', borderRadius: 8, color: '#10B981', fontSize: 10, fontWeight: 700, padding: '6px 10px', cursor: 'pointer' }}>
+                                                        Check Resource
+                                                    </button>
+                                                </div>
+                                                <div className="card" style={{ background: 'rgba(66, 133, 244, 0.05)', padding: 16, borderRadius: 20, border: '1px solid rgba(66, 133, 244, 0.1)', margin: 0 }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#4285F4', marginBottom: 10 }}>
+                                                        <Icon name="search" size={16} />
+                                                        <div style={{ fontSize: 11, fontWeight: 800 }}>GOOGLE SEARCH INSIGHT</div>
+                                                    </div>
+                                                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, whiteSpace: 'pre-line', marginBottom: 12 }}>{selectedKnowledge.googleInsight}</div>
+                                                    <button
+                                                        onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(selectedKnowledge.title)}`, '_blank')}
+                                                        style={{ background: 'rgba(66, 133, 244, 0.1)', border: 'none', borderRadius: 8, color: '#4285F4', fontSize: 10, fontWeight: 700, padding: '6px 10px', cursor: 'pointer' }}>
+                                                        Go to Google
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            {/* Detailed Analysis Section */}
+                                            <div style={{ background: 'rgba(255,255,255,0.03)', padding: 24, borderRadius: 24, border: '1px solid var(--border)' }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+                                                    <Icon name="clipboard-check" color="var(--primary)" size={18} />
+                                                    <div style={{ fontSize: 13, fontWeight: 800, color: 'white' }}>SOLUSI & LANGKAH PERBAIKAN</div>
+                                                </div>
+                                                <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.8)', lineHeight: 1.8, whiteSpace: 'pre-line' }}>
+                                                    {selectedKnowledge.analysis}
+                                                </div>
+                                            </div>
+
+                                            <div style={{ display: 'flex', gap: 12, marginTop: 30 }}>
                                                 <button
-                                                    onClick={() => alert('Membuka detail resource AI...')}
-                                                    style={{ background: 'rgba(16, 185, 129, 0.1)', border: 'none', borderRadius: 8, color: '#10B981', fontSize: 10, fontWeight: 700, padding: '6px 10px', cursor: 'pointer' }}>
-                                                    Check Resource
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(selectedKnowledge.analysis);
+                                                        alert('Solusi berhasil disalin ke clipboard!');
+                                                    }}
+                                                    style={{
+                                                        flex: 1, padding: '16px',
+                                                        background: 'rgba(255,255,255,0.05)',
+                                                        border: '1px solid var(--border)', borderRadius: 16, color: 'white',
+                                                        fontWeight: 800, fontSize: 14, cursor: 'pointer',
+                                                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8
+                                                    }}>
+                                                    <Icon name="copy" size={18} /> Salin Solusi
+                                                </button>
+                                                <button
+                                                    onClick={() => globalShare({ title: selectedKnowledge.title, text: selectedKnowledge.analysis })}
+                                                    style={{
+                                                        flex: 1, padding: '16px',
+                                                        background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
+                                                        border: 'none', borderRadius: 16, color: 'white',
+                                                        fontWeight: 800, fontSize: 14, cursor: 'pointer',
+                                                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                                                        boxShadow: '0 10px 25px rgba(99, 102, 241, 0.3)'
+                                                    }}>
+                                                    <Icon name="share-2" size={18} /> Bagikan
                                                 </button>
                                             </div>
-                                            <div className="card" style={{ background: 'rgba(66, 133, 244, 0.05)', padding: 16, borderRadius: 20, border: '1px solid rgba(66, 133, 244, 0.1)', margin: 0 }}>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#4285F4', marginBottom: 10 }}>
-                                                    <Icon name="search" size={16} />
-                                                    <div style={{ fontSize: 11, fontWeight: 800 }}>GOOGLE SEARCH INSIGHT</div>
-                                                </div>
-                                                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, whiteSpace: 'pre-line', marginBottom: 12 }}>{selectedKnowledge.googleInsight}</div>
-                                                <button
-                                                    onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(selectedKnowledge.title)}`, '_blank')}
-                                                    style={{ background: 'rgba(66, 133, 244, 0.1)', border: 'none', borderRadius: 8, color: '#4285F4', fontSize: 10, fontWeight: 700, padding: '6px 10px', cursor: 'pointer' }}>
-                                                    Go to Google
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        {/* Detailed Analysis Section */}
-                                        <div style={{ background: 'rgba(255,255,255,0.03)', padding: 24, borderRadius: 24, border: '1px solid var(--border)' }}>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-                                                <Icon name="clipboard-check" color="var(--primary)" size={18} />
-                                                <div style={{ fontSize: 13, fontWeight: 800, color: 'white' }}>SOLUSI & LANGKAH PERBAIKAN</div>
-                                            </div>
-                                            <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.8)', lineHeight: 1.8, whiteSpace: 'pre-line' }}>
-                                                {selectedKnowledge.analysis}
-                                            </div>
-                                        </div>
-
-                                        <div style={{ display: 'flex', gap: 12, marginTop: 30 }}>
                                             <button
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(selectedKnowledge.analysis);
-                                                    alert('Solusi berhasil disalin ke clipboard!');
-                                                }}
-                                                style={{
-                                                    flex: 1, padding: '16px',
-                                                    background: 'rgba(255,255,255,0.05)',
-                                                    border: '1px solid var(--border)', borderRadius: 16, color: 'white',
-                                                    fontWeight: 800, fontSize: 14, cursor: 'pointer',
-                                                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8
-                                                }}>
-                                                <Icon name="copy" size={18} /> Salin Solusi
-                                            </button>
-                                            <button
-                                                onClick={() => globalShare({ title: selectedKnowledge.title, text: selectedKnowledge.analysis })}
-                                                style={{
-                                                    flex: 1, padding: '16px',
-                                                    background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
-                                                    border: 'none', borderRadius: 16, color: 'white',
-                                                    fontWeight: 800, fontSize: 14, cursor: 'pointer',
-                                                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                                                    boxShadow: '0 10px 25px rgba(99, 102, 241, 0.3)'
-                                                }}>
-                                                <Icon name="share-2" size={18} /> Bagikan
+                                                onClick={() => setSelectedKnowledge(null)}
+                                                style={{ width: '100%', padding: '12px', background: 'transparent', border: 'none', color: 'var(--text-gray)', fontSize: 13, fontWeight: 600, marginTop: 16, cursor: 'pointer' }}>
+                                                Tutup Laporan
                                             </button>
                                         </div>
-                                        <button
-                                            onClick={() => setSelectedKnowledge(null)}
-                                            style={{ width: '100%', padding: '12px', background: 'transparent', border: 'none', color: 'var(--text-gray)', fontSize: 13, fontWeight: 600, marginTop: 16, cursor: 'pointer' }}>
-                                            Tutup Laporan
-                                        </button>
                                     </div>
                                 </div>
-                            </div>
-                        )}
+                            )
+                        }
 
                         <div className="fab" onClick={onCreateQuestion}>
                             <Icon name="plus" color="white" size={28} />
                         </div>
-                    </div>
-                </Background3D>
+                    </div >
+                </Background3D >
             );
         };
 
