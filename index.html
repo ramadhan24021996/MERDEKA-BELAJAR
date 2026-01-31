@@ -2356,47 +2356,8 @@
             const [uploading, setUploading] = useState(false);
             const fileInputRef = useRef(null);
 
-            // New state for Skills & Stats
-            const [skills, setSkills] = useState(['React JS', 'System Admin', 'Network Security', 'Python', 'DevOps']);
-            const [newSkill, setNewSkill] = useState('');
+            // Dictionary Bahasa moved down
 
-            // Helper for animated numbers
-            const AnimatedCounter = ({ end, duration = 1000, label, icon, color }) => {
-                const [count, setCount] = useState(0);
-                useEffect(() => {
-                    let start = 0;
-                    const stepTime = Math.abs(Math.floor(duration / end));
-                    const timer = setInterval(() => {
-                        start += 1;
-                        setCount(start);
-                        if (start >= end) clearInterval(timer);
-                    }, stepTime);
-                    return () => clearInterval(timer);
-                }, [end, duration]);
-
-                return (
-                    <div style={{ flex: 1, background: 'rgba(255,255,255,0.03)', padding: 16, borderRadius: 20, border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-                        <div style={{ padding: 10, background: `${color}15`, borderRadius: '50%', color: color }}>
-                            <Icon name={icon} size={20} />
-                        </div>
-                        <div style={{ fontSize: 24, fontWeight: 800 }}>{count}</div>
-                        <div style={{ fontSize: 11, color: 'var(--text-gray)' }}>{label}</div>
-                    </div >
-                );
-            };
-
-            const handleAddSkill = (e) => {
-                if (e.key === 'Enter' && newSkill.trim()) {
-                    if (!skills.includes(newSkill.trim())) {
-                        setSkills([...skills, newSkill.trim()]);
-                    }
-                    setNewSkill('');
-                }
-            };
-
-            const removeSkill = (skill) => {
-                setSkills(skills.filter(s => s !== skill));
-            };
 
             const handleFileChange = (e) => {
                 const file = e.target.files[0];
@@ -2459,6 +2420,32 @@
                     return saved ? JSON.parse(saved) : ['Hardware', 'Networking', 'Software Install', 'Windows OS'];
                 } catch (e) { return ['Hardware', 'Networking', 'Software Install', 'Windows OS']; }
             });
+            const [newSkill, setNewSkill] = useState('');
+
+            // Helper for animated numbers
+            const AnimatedCounter = ({ end, duration = 1000, label, icon, color }) => {
+                const [count, setCount] = useState(0);
+                useEffect(() => {
+                    let start = 0;
+                    const stepTime = Math.abs(Math.floor(duration / end));
+                    const timer = setInterval(() => {
+                        start += 1;
+                        setCount(start);
+                        if (start >= end) clearInterval(timer);
+                    }, stepTime);
+                    return () => clearInterval(timer);
+                }, [end, duration]);
+
+                return (
+                    <div style={{ flex: 1, background: 'rgba(255,255,255,0.03)', padding: 16, borderRadius: 20, border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                        <div style={{ padding: 10, background: `${color}15`, borderRadius: '50%', color: color }}>
+                            <Icon name={icon} size={20} />
+                        </div>
+                        <div style={{ fontSize: 24, fontWeight: 800 }}>{count}</div>
+                        <div style={{ fontSize: 11, color: 'var(--text-gray)' }}>{label}</div>
+                    </div >
+                );
+            };
 
             // Stats Simulation
             const [stats] = useState({
@@ -2490,14 +2477,12 @@
                 }
             }, [skills, userName]);
 
-            const handleAddSkill = () => {
-                const newSkill = prompt("Tambah Keahlian Baru (mis: ReactJS, Python):");
-                if (newSkill && newSkill.trim()) {
-                    if (skills.includes(newSkill.trim())) {
-                        alert('Keahlian sudah ada!');
-                        return;
+            const handleAddSkill = (e) => {
+                if (e.key === 'Enter' && newSkill.trim()) {
+                    if (!skills.includes(newSkill.trim())) {
+                        setSkills([...skills, newSkill.trim()]);
                     }
-                    setSkills([...skills, newSkill.trim()]);
+                    setNewSkill('');
                 }
             };
 
