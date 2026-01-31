@@ -24,6 +24,8 @@
         window.onerror = function (msg, url, line, col, error) {
             // Ignore benign ResizeObserver error
             if (msg.includes('ResizeObserver')) return false;
+            // Ignore React DOM RemoveChild errors (common with extensions like Passbolt)
+            if (msg.includes('removeChild') || msg.includes('NotFoundError')) return true;
 
             const errorContainer = document.getElementById('error-container');
             if (errorContainer) {
@@ -5186,8 +5188,8 @@
 
         // --- MAIN APP ---
         function App() {
-            // Always force splash screen on first load
-            const [screen, setScreen] = useState('splash');
+            // Skip splash to prevent DOM conflicts and faster load
+            const [screen, setScreen] = useState(() => redis.get('userName') ? 'main' : 'auth');
             const [onboardingStep, setOnboardingStep] = useState(0);
 
             // State Initialization via Redis Database
