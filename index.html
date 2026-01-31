@@ -2481,9 +2481,13 @@
 
             const handleAddSkill = (e) => {
                 if (e.key === 'Enter' && newSkill.trim()) {
-                    if (!skills.includes(newSkill.trim())) {
-                        setSkills([...skills, newSkill.trim()]);
+                    const skillToAdd = newSkill.trim();
+                    // Case-insensitive duplicate check
+                    if (skills.some(s => s.toLowerCase() === skillToAdd.toLowerCase())) {
+                        alert('Keahlian sudah ada dalam daftar!');
+                        return;
                     }
+                    setSkills([...skills, skillToAdd]);
                     setNewSkill('');
                 }
             };
