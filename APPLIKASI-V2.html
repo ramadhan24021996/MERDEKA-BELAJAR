@@ -5242,29 +5242,58 @@
                 redis.set('notifications', notifications);
             }, [screen, tab, userName, userBio, userPhoto, activityLog, userRole, isPrivate, userFriends, knowledge, categoryData, notifications]);
 
-            // Browser History Navigation Handler (Moved to hooks area)
-            useEffect(() => {
-                // Push state on tab change/bidang selection
-                window.history.pushState(
-                    { tab, selectedBidang: selectedBidang ? selectedBidang.name : null },
-                    '',
-                    `#${tab}${selectedBidang ? '/' + encodeURIComponent(selectedBidang.name) : ''}`
-                );
+            // Browser History & Keyboard Navigation Handler
+            const isInternalNav = useRef(false);
 
+            useEffect(() => {
+                if (!isInternalNav.current) {
+                    window.history.pushState(
+                        { tab, selectedBidang: selectedBidang ? selectedBidang.name : null },
+                        '',
+                        `#${tab}${selectedBidang ? '/' + encodeURIComponent(selectedBidang.name) : ''}`
+                    );
+                }
+                isInternalNav.current = false;
+            }, [tab, selectedBidang]);
+
+            useEffect(() => {
                 const handlePopState = (event) => {
                     if (event.state) {
+                        isInternalNav.current = true;
                         setTab(event.state.tab || 'home');
                         if (event.state.selectedBidang === null) {
                             setSelectedBidang(null);
                         } else {
-                            // If we have a bidang name in state, restore it if possible
                             const found = CATEGORIES_DATA.find(c => c.name === event.state.selectedBidang);
                             if (found) setSelectedBidang(found);
                         }
                     }
                 };
+
+                const handleKeyDown = (e) => {
+                    // Don't trigger if user is typing
+                    if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+                    const tabs = ['home', 'bidang', 'pesan', 'anggota', 'notif', 'profil'];
+                    const currentIndex = tabs.indexOf(tab);
+
+                    if (e.key === 'ArrowRight') {
+                        const nextIndex = (currentIndex + 1) % tabs.length;
+                        setTab(tabs[nextIndex]);
+                        setSelectedBidang(null);
+                    } else if (e.key === 'ArrowLeft') {
+                        const prevIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+                        setTab(tabs[prevIndex]);
+                        setSelectedBidang(null);
+                    }
+                };
+
                 window.addEventListener('popstate', handlePopState);
-                return () => window.removeEventListener('popstate', handlePopState);
+                window.addEventListener('keydown', handleKeyDown);
+                return () => {
+                    window.removeEventListener('popstate', handlePopState);
+                    window.removeEventListener('keydown', handleKeyDown);
+                };
             }, [tab, selectedBidang]);
 
             const addNotification = (notif) => {
